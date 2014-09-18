@@ -1,6 +1,9 @@
 /*global describe, it */
 "use strict";
-var should = require('chai').should();
+
+var expect = require('chai').expect,
+    should = require('chai').should();
+
 Object.prototype.each = function (fn, context) {
     for (var key in this) {
         if (this.hasOwnProperty(key)) {
@@ -25,7 +28,7 @@ describe('Testing async-method', function () {
         timers.async(function() {
             count++;
         });
-        count.should.be.equal(0);
+        expect(count).to.eql(0);
     });
     it('invoked', function (done) {
         var count = 0;
@@ -33,7 +36,7 @@ describe('Testing async-method', function () {
             count++;
         });
         setTimeout(function() {
-            count.should.be.equal(1);
+            expect(count).to.eql(1);
             done();
         }, 25);
     });
@@ -43,7 +46,7 @@ describe('Testing async-method', function () {
             count++;
         });
         setTimeout(function() {
-            count.should.be.equal(1);
+            expect(count).to.eql(1);
             done();
         }, 0);
     });
@@ -55,7 +58,7 @@ describe('Testing async-method', function () {
         });
         handle.cancel();
         setTimeout(function() {
-            count.should.be.equal(0);
+            expect(count).to.eql(0);
             done();
         }, 25);
     });

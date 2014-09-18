@@ -1,6 +1,8 @@
 /*global describe, it */
 "use strict";
-var should = require('chai').should();
+var expect = require('chai').expect,
+    should = require('chai').should();
+
 Object.prototype.each = function (fn, context) {
     for (var key in this) {
         if (this.hasOwnProperty(key)) {
@@ -20,6 +22,7 @@ var timers = require("../index.js"),
     };
 
 describe('Testing later-method', function () {
+
     describe('without repeat', function () {
         it('later', function (done) {
             var count = 0;
@@ -28,9 +31,9 @@ describe('Testing later-method', function () {
             }, 100);
             // purposly, check after >2x timeout --> count should only increase 1x
             setTimeout(function() {
-                count.should.be.equal(1);
+                expect(count).to.eql(1);
                 done();
-            }, 220);
+            }, 280);
         });
         it('canceled later', function (done) {
             var count = 0;
@@ -41,9 +44,9 @@ describe('Testing later-method', function () {
                 handle.cancel();
             }, 10);
             setTimeout(function() {
-                count.should.be.equal(0);
+                expect(count).to.eql(0);
                 done();
-            }, 120);
+            }, 180);
         });
         it('without timeout', function (done) {
             var count = 0,
@@ -55,10 +58,10 @@ describe('Testing later-method', function () {
             // count will be 1 at this stage (which has to be 0)
             countbefore = count;
             setTimeout(function() {
-                count.should.be.equal(1);
-                countbefore.should.be.equal(0);
+                expect(count).to.eql(1);
+                expect(countbefore).to.eql(0);
                 done();
-            }, 15);
+            }, 80);
         });
         it('canceled without timeout', function (done) {
             var count = 0;
@@ -67,9 +70,9 @@ describe('Testing later-method', function () {
             });
             handle.cancel();
             setTimeout(function() {
-                count.should.be.equal(0);
+                expect(count).to.eql(0);
                 done();
-            }, 15);
+            }, 80);
         });
     });
     describe('repeated', function () {
@@ -81,7 +84,7 @@ describe('Testing later-method', function () {
             }, 100, true);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(0);
+                expect(count).to.eql(0);
                 done();
             }, 50);
         });
@@ -93,9 +96,9 @@ describe('Testing later-method', function () {
             }, 100, true);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(2);
+                expect(count).to.eql(2);
                 done();
-            }, 220);
+            }, 280);
         });
         it('later repeated every 100ms canceled at 50ms', function (done) {
             var count = 0,
@@ -107,9 +110,9 @@ describe('Testing later-method', function () {
                 handle.cancel();
             }, 50);
             setTimeout(function() {
-                count.should.be.equal(0);
+                expect(count).to.eql(0);
                 done();
-            }, 220);
+            }, 280);
         });
         it('later repeated every 100ms canceled at 250ms', function (done) {
             var count = 0,
@@ -121,126 +124,126 @@ describe('Testing later-method', function () {
                 handle.cancel();
             }, 250);
             setTimeout(function() {
-                count.should.be.equal(2);
+                expect(count).to.eql(2);
                 done();
-            }, 420);
+            }, 480);
         });
     });
     describe('repeated with different first interval', function () {
-        it('later first 50ms, repeated every 100ms, check at 25ms', function (done) {
+        it('later first 100ms, repeated every 200ms, check at 50ms', function (done) {
             var count = 0,
                 handle;
             handle = timers.later(function() {
                 count++;
-            }, 50, 100);
+            }, 100, 200);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(0);
+                expect(count).to.eql(0);
                 done();
-            }, 25);
+            }, 50);
         });
-        it('later first 50ms, repeated every 100ms, check at 75ms', function (done) {
+        it('later first 100ms, repeated every 200ms, check at 150ms', function (done) {
             var count = 0,
                 handle;
             handle = timers.later(function() {
                 count++;
-            }, 50, 100);
+            }, 100, 200);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(1);
+                expect(count).to.eql(1);
                 done();
-            }, 75);
+            }, 150);
         });
-        it('later first 50ms, repeated every 100ms, check at 125ms', function (done) {
+        it('later first 100ms, repeated every 200ms, check at 250ms', function (done) {
             var count = 0,
                 handle;
             handle = timers.later(function() {
                 count++;
-            }, 50, 100);
+            }, 100, 200);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(1);
+                expect(count).to.eql(1);
                 done();
-            }, 125);
+            }, 250);
         });
-        it('later first 50ms, repeated every 100ms, check at 175ms', function (done) {
+        it('later first 100ms, repeated every 200ms, check at 350ms', function (done) {
             var count = 0,
                 handle;
             handle = timers.later(function() {
                 count++;
-            }, 50, 100);
+            }, 100, 200);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(2);
+                expect(count).to.eql(2);
                 done();
-            }, 175);
+            }, 350);
         });
-        it('later first 50ms, repeated every 100ms, check at 225ms', function (done) {
+        it('later first 100ms, repeated every 200ms, check at 450ms', function (done) {
             var count = 0,
                 handle;
             handle = timers.later(function() {
                 count++;
-            }, 50, 100);
+            }, 100, 200);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(2);
+                expect(count).to.eql(2);
                 done();
-            }, 225);
+            }, 450);
         });
-        it('later first 50ms, repeated every 100ms, check at 275ms', function (done) {
+        it('later first 100ms, repeated every 200ms, check at 550ms', function (done) {
             var count = 0,
                 handle;
             handle = timers.later(function() {
                 count++;
-            }, 50, 100);
+            }, 100, 200);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(3);
+                expect(count).to.eql(3);
                 done();
-            }, 275);
+            }, 550);
         });
-        it('later first 50ms, repeated every 100ms canceled at 25ms', function (done) {
+        it('later first 100ms, repeated every 200ms canceled at 50ms', function (done) {
             var count = 0,
                 handle;
             handle = timers.later(function() {
                 count++;
-            }, 50, 100);
+            }, 100, 200);
             setTimeout(function() {
                 handle.cancel();
-            }, 25);
+            }, 50);
             setTimeout(function() {
-                count.should.be.equal(0);
+                expect(count).to.eql(0);
                 done();
-            }, 325);
+            }, 650);
         });
-        it('later first 50ms, repeated every 100ms canceled at 125ms', function (done) {
+        it('later first 100ms, repeated every 200ms canceled at 250ms', function (done) {
             var count = 0,
                 handle;
             handle = timers.later(function() {
                 console.log(count);
                 count++;
-            }, 50, 100);
+            }, 100, 200);
             setTimeout(function() {
                 handle.cancel();
-            }, 125);
+            }, 250);
             setTimeout(function() {
-                count.should.be.equal(1);
+                expect(count).to.eql(1);
                 done();
-            }, 325);
+            }, 650);
         });
-        it('later first 50ms, repeated every 100ms canceled at 300ms', function (done) {
+        it('later first 100ms, repeated every 200ms canceled at 600ms', function (done) {
             var count = 0,
                 handle;
             handle = timers.later(function() {
                 count++;
-            }, 50, 100);
+            }, 100, 200);
             setTimeout(function() {
                 handle.cancel();
-            }, 300);
+            }, 600);
             setTimeout(function() {
-                count.should.be.equal(3);
+                expect(count).to.eql(3);
                 done();
-            }, 325);
+            }, 850);
         });
         it('check context without interval', function (done) {
             var a = {},
@@ -255,11 +258,11 @@ describe('Testing later-method', function () {
                 fn = function() {
                     (this === a).should.be.true;
                 },
-                handle = timers.later(fn.bind(a), 25, true);
+                handle = timers.later(fn.bind(a), 50, true);
             setTimeout(function() {
                 handle.cancel();
                 done();
-            }, 80);
+            }, 100);
         });
         it('check going to async', function (done) {
             timers.later(done);
@@ -290,7 +293,7 @@ describe('Testing later-method', function () {
                 done(new Error('_afterAsyncFn got invoked but should not have'));
             };
             I.later(function() {}, 10, false, false);
-            setTimeout(done, 50);
+            setTimeout(done, 80);
         });
 
         it('check if _afterAsyncFn is invoked with interval', function (done) {
@@ -301,12 +304,12 @@ describe('Testing later-method', function () {
             I._afterAsyncFn = function() {
                 count++;
             };
-            handle = I.later(function() {}, 25, true);
+            handle = I.later(function() {}, 100, true);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(3);
+                expect(count).to.eql(3);
                 done();
-            }, 90);
+            }, 350);
         });
 
         it('check if _afterAsyncFn is invoked with true param with interval', function (done) {
@@ -317,12 +320,12 @@ describe('Testing later-method', function () {
             I._afterAsyncFn = function() {
                 count++;
             };
-            handle = I.later(function() {}, 25, true, true);
+            handle = I.later(function() {}, 100, true, true);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(3);
+                expect(count).to.eql(3);
                 done();
-            }, 90);
+            }, 350);
         });
 
         it('check if _afterAsyncFn is invoked with false param with interval', function (done) {
@@ -334,12 +337,12 @@ describe('Testing later-method', function () {
                 count++;
                 done(new Error('_afterAsyncFn got invoked but should not have'));
             };
-            handle = I.later(function() {}, 25, true, false);
+            handle = I.later(function() {}, 100, true, false);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(0);
+                expect(count).to.eql(0);
                 done();
-            }, 90);
+            }, 350);
         });
 
         it('check if _afterAsyncFn is invoked with different interval', function (done) {
@@ -350,12 +353,12 @@ describe('Testing later-method', function () {
             I._afterAsyncFn = function() {
                 count++;
             };
-            handle = I.later(function() {}, 25, 26);
+            handle = I.later(function() {}, 25, 100);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(3);
+                expect(count).to.eql(3);
                 done();
-            }, 90);
+            }, 275);
         });
 
         it('check if _afterAsyncFn is invoked with true param with different interval', function (done) {
@@ -366,12 +369,12 @@ describe('Testing later-method', function () {
             I._afterAsyncFn = function() {
                 count++;
             };
-            handle = I.later(function() {}, 25, 26, true);
+            handle = I.later(function() {}, 25, 100, true);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(3);
+                expect(count).to.eql(3);
                 done();
-            }, 90);
+            }, 275);
         });
 
         it('check if _afterAsyncFn is invoked with false param with different interval', function (done) {
@@ -383,13 +386,14 @@ describe('Testing later-method', function () {
                 count++;
                 done(new Error('_afterAsyncFn got invoked but should not have'));
             };
-            handle = I.later(function() {}, 25, 26, false);
+            handle = I.later(function() {}, 25, 100, false);
             setTimeout(function() {
                 handle.cancel();
-                count.should.be.equal(0);
+                expect(count).to.eql(0);
                 done();
-            }, 90);
+            }, 275);
         });
 
     });
+
 });
